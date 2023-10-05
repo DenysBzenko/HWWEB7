@@ -1,23 +1,40 @@
 .container {
     max-width: 600px;
-    margin: 0 auto;
+    margin: 50px auto;
     padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #f7f7f7;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
     text-align: center;
+    margin-bottom: 20px;
 }
 
-#newTask {
-    width: 80%;
+input, button {
     padding: 10px;
-    margin-right: 10px;
+    margin: 5px 0;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+input {
+    width: 70%;
+    border: 1px solid #ccc;
 }
 
 button {
-    padding: 10px 15px;
-    margin-top: 10px;
+    width: 25%;
+    background-color: #007BFF;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #0056b3;
 }
 
 #taskList {
@@ -26,18 +43,29 @@ button {
 }
 
 #taskList li {
+    padding: 10px;
+    margin: 5px 0;
+    background-color: #fff;
+    border-radius: 4px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px;
-    border-bottom: 1px solid #eee;
 }
 
-#taskList li.completed {
+#taskList li span {
+    flex: 1;
+}
+
+#taskList li button {
+    margin-left: 10px;
+}
+
+#taskList li.completed span {
     text-decoration: line-through;
     color: gray;
 }
+
 #taskList li.deleted span {
     text-decoration: line-through;
-    color: gray;
+    color: red;
 }
