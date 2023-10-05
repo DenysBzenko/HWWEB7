@@ -7,12 +7,42 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let tasks = [];
 
+    function formatDate(date) {
+        return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
+    }
+
+    removeCompletedButton.addEventListener('click', function() {
+        tasks = tasks.filter(task => !task.completed && !task.deleted);
+        renderTasks();
+    });
+
+    taskList.addEventListener('dblclick', function(e) {
+        if (e.target.tagName === 'SPAN' && !e.target.parentElement.classList.contains('deleted')) {
+            const index = parseInt(e.target.nextElementSibling.getAttribute('data-index'));
+            newTaskInput.value = tasks[index].text;
+            newTaskInput.focus();
+            newTaskInput.addEventListener('keydown', function(event) {
+                if (event.key === 'Enter') {
+                    tasks[index].text = newTaskInput.value.trim();
+                    tasks[index].date = new Date();
+                    newTaskInput.value = '';
+                    renderTasks();
+                } else if (event.key === 'Escape') {
+                    newTaskInput.value = '';
+                }
+            });
+        }
+    });
+
     function renderTasks() {
         taskList.innerHTML = '';
         tasks.sort((a, b) => b.date - a.date);
         tasks.forEach((task, index) => {
             const li = document.createElement('li');
-            li.innerHTML = `<span>${task.text}</span> <button class='delete' data-index='${index}'>Delete</button>`;
+            li.innerHTML = `<span>${task.text} <small>(${formatDate(task.date)})</small></span> <button class='delete' data-index='${index}'>Delete</button>`;
+            if (task.deleted) {
+                li.classList.add('deleted');
+            }
             if (task.completed) {
                 li.classList.add('completed');
             }
@@ -28,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function() {
         deleteButtons.forEach(button => {
             button.addEventListener('click', function() {
                 const index = parseInt(button.getAttribute('data-index'));
-                tasks.splice(index, 1);
+                tasks[index].deleted = true;
                 renderTasks();
             });
         });
@@ -37,7 +67,7 @@ document.addEventListener('DOMContentLoaded', function() {
     addTaskButton.addEventListener('click', function() {
         const taskText = newTaskInput.value.trim();
         if (taskText) {
-            tasks.push({ text: taskText, date: new Date(), completed: false });
+            tasks.push({ text: taskText, date: new Date(), completed: false, deleted: false });
             newTaskInput.value = '';
             renderTasks();
         }

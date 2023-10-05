@@ -37,3 +37,7 @@ button {
     text-decoration: line-through;
     color: gray;
 }
+#taskList li.deleted span {
+    text-decoration: line-through;
+    color: gray;
+}
